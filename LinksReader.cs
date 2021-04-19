@@ -64,9 +64,10 @@ namespace RequestsTest
 
             using (var client = new WebClient())
             {
-                Stopwatch stopwatch = new Stopwatch();
                 foreach (var link in links)
                 {
+                    Stopwatch stopwatch = new Stopwatch();
+
                     stopwatch.Start();
                     var result = client.DownloadString(link);
                     stopwatch.Stop();
