@@ -17,6 +17,7 @@ namespace RequestsTest
 
             TestLinks.Compare(htmlLinks.Result, xmlLinks.Result);
             TestLinks.ElapseTime(htmlLinks.Result);
+            TestLinks.ElapseTime(xmlLinks.Result);
 
             Console.ReadKey();
         }

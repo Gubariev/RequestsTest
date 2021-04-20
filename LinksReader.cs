@@ -29,7 +29,14 @@ namespace RequestsTest
             foreach (var item in links)
             {
                 var link = item.GetAttribute("href");
-                linksList.Add(link);
+                if (link.Contains("http://") || link.Contains("https://"))
+                {
+                    linksList.Add(link);
+                }
+                else
+                {
+                    linksList.Add("http://" + WebAddress + link);
+                }
             }
             return linksList;
         }
@@ -47,8 +54,6 @@ namespace RequestsTest
                     .Replace("<loc>", "")
                     .Replace("</loc>", "")
                     .Replace($"https://{WebAddress}/sitemap.xml", ""));
-
-
             }
             if (linksList.Count == 0)
             {
@@ -64,6 +69,7 @@ namespace RequestsTest
 
             using (var client = new WebClient())
             {
+
                 foreach (var link in links)
                 {
                     Stopwatch stopwatch = new Stopwatch();
@@ -73,6 +79,8 @@ namespace RequestsTest
                     stopwatch.Stop();
                     Console.WriteLine(link + " = " + stopwatch.Elapsed);
                 }
+
+                Console.WriteLine("Elapsing is finished");
             }
         }
 
