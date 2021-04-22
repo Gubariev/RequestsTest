@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace RequestsTest
@@ -66,21 +67,35 @@ namespace RequestsTest
 
         public void ElapseTime(List<string> links)
         {
-
-            using (var client = new WebClient())
+            if (links != null)
             {
-
-                foreach (var link in links)
+                using (var client = new WebClient())
                 {
-                    Stopwatch stopwatch = new Stopwatch();
+                    try
+                    {
+                        foreach (var link in links)
+                        {
+                            Stopwatch stopwatch = new Stopwatch();
 
-                    stopwatch.Start();
-                    var result = client.DownloadString(link);
-                    stopwatch.Stop();
-                    Console.WriteLine(link + " = " + stopwatch.Elapsed);
+                            stopwatch.Start();
+                            var result = client.DownloadString(link);
+                            stopwatch.Stop();
+                            Console.WriteLine(link + " = " + stopwatch.Elapsed);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
+
+                    Console.WriteLine("Elapsing is finished");
                 }
-
-                Console.WriteLine("Elapsing is finished");
+            }
+            else
+            {
+                Console.WriteLine("It's empty");
             }
         }
 
