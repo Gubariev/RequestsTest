@@ -9,11 +9,13 @@ namespace RequestsTest
         {
             var TestLinks = new LinksReader();
             Console.WriteLine("Write your link \nExamples: google.com, dl.nure.ua, youtube.com/watch?v=sFrubDwkh70");
-            TestLinks.WebAddress = Console.ReadLine();
+            TestLinks.Link.WebAddress = Console.ReadLine();
+
             var xmlLinks = TestLinks.XmlReadLinks();
             var htmlLinks = TestLinks.HtmlReadLinks();
 
             TestLinks.Compare(htmlLinks.Result, xmlLinks.Result);
+
             TestLinks.ElapseTime(htmlLinks.Result);
             TestLinks.ElapseTime(xmlLinks.Result);
             Console.ReadKey();
