@@ -14,17 +14,12 @@ namespace RequestsTest
             var htmlLinks = TestLinks.CompareHtml(TestLinks.HtmlReadLinks().Result, TestLinks.XmlReadLinks().Result);
             var xmlLinks = TestLinks.CompareXml(TestLinks.XmlReadLinks().Result, TestLinks.HtmlReadLinks().Result);
             
-            LinksReader.Output(htmlLinks, "html");
-            LinksReader.Output(xmlLinks, "xml");
+            LinksReader.Output(htmlLinks, "Html");
+            LinksReader.Output(xmlLinks, "Xml");
 
-            foreach (var item in TestLinks.ElapseTime(htmlLinks))
-            {
-                Console.WriteLine($"{item.WebAddress} - {item.ElapseTime} seconds");
-            }
-            foreach (var item in TestLinks.ElapseTime(xmlLinks))
-            {
-                Console.WriteLine($"{item.WebAddress} - {item.ElapseTime} seconds");
-            }
+            TestLinks.OutputElapseTime(htmlLinks);
+            TestLinks.OutputElapseTime(xmlLinks);
+            
             Console.ReadKey();
         }
 

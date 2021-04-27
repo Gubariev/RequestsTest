@@ -21,28 +21,37 @@ namespace RequestsTest
             var linksList = new List<string>();
             var document = await BrowsingContext.New(Link.Cfg).OpenAsync(Link.WebAddress);
             var links = document.QuerySelectorAll("a");
-            foreach (var item in links)
+            if (links != null)
             {
-                try
+                foreach (var item in links)
                 {
-                    var link = item.GetAttribute("href");
-                    if (link.Contains("http://") || link.Contains("https://"))
+                    try
                     {
-                        linksList.Add(link);
+                        var link = item.GetAttribute("href");
+                        if (link.Contains("http://") || link.Contains("https://"))
+                        {
+                            linksList.Add(link);
+                        }
+                        else
+                        {
+                            linksList.Add(Link.WebAddress + link);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        linksList.Add(Link.WebAddress + link);
+
+                        Console.WriteLine(item + " - " + e.Message);
                     }
+
                 }
-                catch (Exception e)
+                if (linksList.Count!=0)
                 {
-
-                    Console.WriteLine(item + " - " + e.Message);
+                    return linksList;
                 }
-
             }
-            return linksList;
+                Console.WriteLine("Couldnt download page");
+                return null;
+            
         }
         public async Task<List<string>> XmlReadLinks() // Считывание линков с Sitemap
         {
@@ -84,7 +93,7 @@ namespace RequestsTest
                             stopwatch.Start();
                             client.DownloadString(link);
                             stopwatch.Stop();
-                            UrlsElapsed.Add(new LinkModel(){ElapseTime = stopwatch.Elapsed.TotalSeconds, WebAddress = link});
+                            UrlsElapsed.Add(new LinkModel() { ElapseTime = stopwatch.Elapsed.TotalSeconds, WebAddress = link });
                         }
                         catch (Exception e)
                         {
@@ -96,8 +105,8 @@ namespace RequestsTest
                     return new List<LinkModel>(UrlsElapsed.OrderBy(l => l.ElapseTime));
                 }
             }
-                Console.WriteLine($"Empty Sitemap page  - {Link.WebAddress}");
-                return null;
+            Console.WriteLine($"Empty Sitemap page  - {Link.WebAddress}");
+            return null;
         }
 
         public List<string> CompareXml(List<string> linksXml, List<string> linksHtml) // Сравнение линков Sitemap'ы и линков данной HTML страницы
@@ -117,10 +126,7 @@ namespace RequestsTest
                 }
                 return linksXml;
             }
-
             return null;
-
-
         }
 
         public List<string> CompareHtml(List<string> linksHtml, List<string> linksXml) // Сравнение линков Sitemap'ы и линков данной HTML страницы
@@ -144,14 +150,36 @@ namespace RequestsTest
 
         public static void Output(List<string> links, string message)
         {
-            Console.WriteLine($"\n{message} links");
-            foreach (var item in links)
+            if (links != null)
             {
-                Console.WriteLine(item);   
+                Console.WriteLine($"\n{message} links");
+                foreach (var item in links)
+                {
+                    Console.WriteLine(item);
+                }
             }
+            else
+            {
+                Console.WriteLine("This document is empty");
+            }
+
         }
 
+        public void OutputElapseTime(List<string> links)
+        {
+            if (links != null)
+            {
+                foreach (var item in ElapseTime(links))
+                {
+                    Console.WriteLine($"{item.WebAddress} - {item.ElapseTime} seconds");
+                }
+            }
+            else
+            {
+                Console.WriteLine("LinksList is empty");
+            }
 
+        }
 
 
 
