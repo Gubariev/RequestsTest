@@ -8,7 +8,7 @@ namespace RequestsTest
         static async Task Main(string[] args)
         {
             var TestLinks = new LinksReader();
-            Console.WriteLine("Write your link \nExamples: google.com, dl.nure.ua, youtube.com/watch?v=sFrubDwkh70");
+            Console.WriteLine("Write your link \nExamples: http://google.com, http://dl.nure.ua, http://youtube.com/watch?v=sFrubDwkh70");
             TestLinks.Link.WebAddress = Console.ReadLine();
 
             var htmlLinks = TestLinks.CompareHtml(TestLinks.HtmlReadLinks().Result, TestLinks.XmlReadLinks().Result);
@@ -25,7 +25,6 @@ namespace RequestsTest
             {
                 Console.WriteLine($"{item.WebAddress} - {item.ElapseTime} seconds");
             }
-           // TestLinks.ElapseTime(TestLinks.XmlReadLinks().Result);
             Console.ReadKey();
         }
 
