@@ -11,13 +11,21 @@ namespace RequestsTest
             Console.WriteLine("Write your link \nExamples: google.com, dl.nure.ua, youtube.com/watch?v=sFrubDwkh70");
             TestLinks.Link.WebAddress = Console.ReadLine();
 
-            var xmlLinks = TestLinks.XmlReadLinks();
-            var htmlLinks = TestLinks.HtmlReadLinks();
+            var htmlLinks = TestLinks.CompareHtml(TestLinks.HtmlReadLinks().Result, TestLinks.XmlReadLinks().Result);
+            var xmlLinks = TestLinks.CompareXml(TestLinks.XmlReadLinks().Result, TestLinks.HtmlReadLinks().Result);
+            
+            LinksReader.Output(htmlLinks, "html");
+            LinksReader.Output(xmlLinks, "xml");
 
-            TestLinks.Compare(htmlLinks.Result, xmlLinks.Result);
-
-            TestLinks.ElapseTime(htmlLinks.Result);
-            TestLinks.ElapseTime(xmlLinks.Result);
+            foreach (var item in TestLinks.ElapseTime(htmlLinks))
+            {
+                Console.WriteLine($"{item.WebAddress} - {item.ElapseTime} seconds");
+            }
+            foreach (var item in TestLinks.ElapseTime(xmlLinks))
+            {
+                Console.WriteLine($"{item.WebAddress} - {item.ElapseTime} seconds");
+            }
+           // TestLinks.ElapseTime(TestLinks.XmlReadLinks().Result);
             Console.ReadKey();
         }
 
